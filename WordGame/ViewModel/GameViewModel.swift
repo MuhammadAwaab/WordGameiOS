@@ -35,6 +35,7 @@ class GameViewModel: GameViewModelProtocol {
     private var wordListDataArray: [[String: String]] = []
     private var randomNumberList: [Int] = []
     private var numberListPoint: Int = 0
+    private var countdown: Timer?
     
     private let provider: DataProviderProtocol
     private var stateManager: GameStateProtocol
@@ -60,6 +61,7 @@ class GameViewModel: GameViewModelProtocol {
     }
     
     func restartGame() {
+        countdown?.invalidate()
         englishWordToDisplay = ""
         spanishWordToDisplay = ""
         numberListPoint = 0
@@ -108,6 +110,14 @@ class GameViewModel: GameViewModelProtocol {
         self.spanishWordToDisplay = spanish
         
         self.updateView?()
+        var runCount = 0
+        countdown = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { timer in
+            runCount += 1
+            if runCount == self.provider.getTimeAllowedForAttempt() {
+                self.countdown?.invalidate()
+                self.stateManager.incorrectChoices = self.stateManager.incorrectChoices + 1
+            }
+        }
     }
     
     func generateNumberForWrongPairingOtherThan(numberToAvoid: Int) -> Int {
@@ -137,6 +147,7 @@ class GameViewModel: GameViewModelProtocol {
     }
     
     func userSelectedWrong() {
+        self.countdown?.invalidate()
         if isShowingRightOption {
             self.stateManager.incorrectChoices = self.stateManager.incorrectChoices + 1
         } else {
@@ -145,6 +156,7 @@ class GameViewModel: GameViewModelProtocol {
     }
     
     func userSelectedCorrect() {
+        self.countdown?.invalidate()
         if isShowingRightOption {
             self.stateManager.correctChoices = self.stateManager.correctChoices + 1
         } else {

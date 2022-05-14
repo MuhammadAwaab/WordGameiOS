@@ -28,14 +28,12 @@ class ViewController: UIViewController {
     func bindWithViewModel() {
         self.viewModel.updateView = { [weak self] in
             DispatchQueue.main.async {
+                self?.resetSpanishLabel()
                 self?.updateScore()
-                
                 UIView.animate(withDuration: TimeInterval(self?.viewModel.getTimeForAttempt() ?? 5)) {
                     self?.spanishLabelTop.constant = self?.view.bounds.height ?? 500
                     self?.view.layoutIfNeeded()
                 }
-
-                
                 self?.spanishLabel.text = self?.viewModel.getSpanishWordToDisplay()
                 self?.englishLabel.text = self?.viewModel.getEnglishWordToDisplay()
             }
