@@ -31,7 +31,7 @@ class GameStateManager: GameStateProtocol {
         didSet {
             if correctChoices + incorrectChoices == pairingsAllowed {
                 self.gameEndCriteriaReached()
-            } else {
+            } else if correctChoices != 0 {
                 self.showNextPairing?()
             }
         }
@@ -41,7 +41,7 @@ class GameStateManager: GameStateProtocol {
         didSet {
             if incorrectChoices == wrongChoicesAllowed {
                 self.gameEndCriteriaReached()
-            } else {
+            } else if incorrectChoices != 0 {
                 self.showNextPairing?()
             }
         }

@@ -41,6 +41,7 @@ class ViewController: UIViewController {
         
         self.viewModel.showEndDialogue = { [weak self] in
             DispatchQueue.main.async {
+                self?.resetSpanishLabel()
                 let endAlert = UIAlertController(title: "Result", message: "Correct attempts:\(self?.viewModel.getCorrectAnswersValue() ?? "") \n Wrong attempts:\(self?.viewModel.getWrongAnswersValues() ?? "")", preferredStyle: .alert)
                 let restartAction = UIAlertAction(title: "Restart", style: .default) { _ in
                     self?.viewModel.restartGame()
@@ -64,7 +65,8 @@ class ViewController: UIViewController {
     
     private func resetSpanishLabel() {
         self.spanishLabel.text = ""
-        self.spanishLabelTop.constant = -100
+        self.englishLabel.text = ""
+        self.spanishLabelTop.constant = -20
         self.view.layoutIfNeeded()
 
     }

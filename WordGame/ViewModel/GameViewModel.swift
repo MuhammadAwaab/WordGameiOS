@@ -61,7 +61,7 @@ class GameViewModel: GameViewModelProtocol {
     }
     
     func restartGame() {
-        countdown?.invalidate()
+       // countdown?.invalidate()
         englishWordToDisplay = ""
         spanishWordToDisplay = ""
         numberListPoint = 0
