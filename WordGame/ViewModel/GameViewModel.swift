@@ -135,7 +135,7 @@ class GameViewModel: GameViewModelProtocol {
     }
     
     func makeRandomNumberList(_ numberOfPairings: Int) -> [Int] {
-        return (0..<numberOfPairings).map{ _ in Int.random(in: 0 ... wordListDataArray.count) }
+        return (0..<numberOfPairings).map{ _ in Int.random(in: 0 ... wordListDataArray.count - 1) }
     }
     
     func getCorrectAnswersValue() -> String {

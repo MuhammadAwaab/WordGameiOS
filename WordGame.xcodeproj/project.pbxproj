@@ -24,6 +24,10 @@
 		7333A788282F0D3D00DC90EA /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7333A786282F0D3D00DC90EA /* GameViewModel.swift */; };
 		7333A78A282F0D6000DC90EA /* words.json in Resources */ = {isa = PBXBuildFile; fileRef = 7333A789282F0D6000DC90EA /* words.json */; };
 		7333A78B282F0D6000DC90EA /* words.json in Resources */ = {isa = PBXBuildFile; fileRef = 7333A789282F0D6000DC90EA /* words.json */; };
+		7333A78D282FDC9600DC90EA /* sampleJson.json in Resources */ = {isa = PBXBuildFile; fileRef = 7333A78C282FDC9600DC90EA /* sampleJson.json */; };
+		7333A78E282FDC9600DC90EA /* sampleJson.json in Resources */ = {isa = PBXBuildFile; fileRef = 7333A78C282FDC9600DC90EA /* sampleJson.json */; };
+		7333A790282FDDE100DC90EA /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7333A78F282FDDE100DC90EA /* MockDataProvider.swift */; };
+		7333A791282FDDE100DC90EA /* MockDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7333A78F282FDDE100DC90EA /* MockDataProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +65,8 @@
 		7333A782282F0CFA00DC90EA /* GameStateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateManager.swift; sourceTree = "<group>"; };
 		7333A786282F0D3D00DC90EA /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		7333A789282F0D6000DC90EA /* words.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = words.json; sourceTree = "<group>"; };
+		7333A78C282FDC9600DC90EA /* sampleJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = sampleJson.json; sourceTree = "<group>"; };
+		7333A78F282FDDE100DC90EA /* MockDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockDataProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +134,9 @@
 		7333A764282F0C6100DC90EA /* WordGameTests */ = {
 			isa = PBXGroup;
 			children = (
+				7333A78C282FDC9600DC90EA /* sampleJson.json */,
 				7333A765282F0C6100DC90EA /* WordGameTests.swift */,
+				7333A78F282FDDE100DC90EA /* MockDataProvider.swift */,
 			);
 			path = WordGameTests;
 			sourceTree = "<group>";
@@ -264,6 +272,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7333A75B282F0C6000DC90EA /* LaunchScreen.storyboard in Resources */,
+				7333A78D282FDC9600DC90EA /* sampleJson.json in Resources */,
 				7333A78A282F0D6000DC90EA /* words.json in Resources */,
 				7333A758282F0C6000DC90EA /* Assets.xcassets in Resources */,
 				7333A756282F0C5100DC90EA /* Main.storyboard in Resources */,
@@ -275,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7333A78B282F0D6000DC90EA /* words.json in Resources */,
+				7333A78E282FDC9600DC90EA /* sampleJson.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -292,6 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7333A790282FDDE100DC90EA /* MockDataProvider.swift in Sources */,
 				7333A787282F0D3D00DC90EA /* GameViewModel.swift in Sources */,
 				7333A783282F0CFA00DC90EA /* GameStateManager.swift in Sources */,
 				7333A753282F0C5100DC90EA /* ViewController.swift in Sources */,
@@ -307,6 +318,7 @@
 			files = (
 				7333A788282F0D3D00DC90EA /* GameViewModel.swift in Sources */,
 				7333A781282F0CDA00DC90EA /* DataProvider.swift in Sources */,
+				7333A791282FDDE100DC90EA /* MockDataProvider.swift in Sources */,
 				7333A784282F0CFA00DC90EA /* GameStateManager.swift in Sources */,
 				7333A766282F0C6100DC90EA /* WordGameTests.swift in Sources */,
 			);
