@@ -10,9 +10,13 @@ import Foundation
 protocol GameViewModelProtocol {
     func generateNumberForWrongPairingOtherThan(numberToAvoid: Int) -> Int
     func randomPercent() -> Double
+    func startGame()
+    func restartGame()
     func makeRandomNumberList(_ numberOfPairings: Int) -> [Int]
     func getCorrectAnswersValue() -> String
     func getWrongAnswersValues() -> String
+    func getEnglishWordToDisplay() -> String
+    func getSpanishWordToDisplay() -> String
     func userSelectedWrong()
     func userSelectedCorrect()
 }
@@ -23,6 +27,9 @@ class GameViewModel: GameViewModelProtocol {
     let englishWordKey = "text_eng"
     let spanishWordKey = "text_spa"
     
+    var englishWordToDisplay = ""
+    var spanishWordToDisplay = ""
+    
     private var isShowingRightOption = true
     private var wordListDataArray: [[String: String]] = []
     private var randomNumberList: [Int] = []
@@ -31,7 +38,8 @@ class GameViewModel: GameViewModelProtocol {
     private let provider: DataProviderProtocol
     private var stateManager: GameStateProtocol
     
-    var updateView:((_ englishWord: String,_ spanishWord: String) -> Void)?
+    var updateView:(() -> Void)?
+    var showEndDialogue:(() -> Void)?
     
     init(provider: DataProviderProtocol = DataProvider()) {
         self.provider = provider
@@ -39,45 +47,67 @@ class GameViewModel: GameViewModelProtocol {
         makeBindingsWithHelpers()
     }
     
-    private func makeBindingsWithHelpers() {
+    func startGame() {
         self.provider.fetchAndProvideWordList { wordList in
             if let listToShow = wordList {
                 self.wordListDataArray = listToShow
+                self.randomNumberList = self.makeRandomNumberList(self.provider.getNumberOfPairingsToShow())
+                self.startGeneratingPairs()
+
             }
         }
+    }
+    
+    func restartGame() {
+        englishWordToDisplay = ""
+        spanishWordToDisplay = ""
+        numberListPoint = 0
+        isShowingRightOption = true
+        self.randomNumberList = self.makeRandomNumberList(self.provider.getNumberOfPairingsToShow())
+        self.stateManager.refreshGameSettings()
+        self.startGeneratingPairs()
+    }
+    
+    private func makeBindingsWithHelpers() {
         
         self.stateManager.notifyGameEndReached = {[unowned self] in
-            
-            
+            self.showEndDialogue?()
         }
         
         self.stateManager.showNextPairing = {[unowned self] in
-            switch randomPercent() {
-            case 0..<25:
-                self.isShowingRightOption = true
-                let randomNumberListItem = randomNumberList[numberListPoint]
-                let pairingDataToShow = wordListDataArray[randomNumberListItem]
-                if let englishWord = pairingDataToShow[englishWordKey], let spanishWord = pairingDataToShow[spanishWordKey] {
-                    self.updateViewWithWords(english: englishWord, spanish: spanishWord)
-                }
-                
-            default:
-                self.isShowingRightOption = false
-                let randomNumberListItem = randomNumberList[numberListPoint]
-                let pairingDataToShow = wordListDataArray[randomNumberListItem]
-                let wrongPairingData = wordListDataArray[generateNumberForWrongPairingOtherThan(numberToAvoid: randomNumberListItem)]
-                if let englishWord = pairingDataToShow[englishWordKey], let spanishWord = wrongPairingData[spanishWordKey] {
-                    self.updateViewWithWords(english: englishWord, spanish: spanishWord)
-                }
+            startGeneratingPairs()
+        }
+        
+    }
+    
+    private func startGeneratingPairs() {
+        switch randomPercent() {
+        case 0..<25:
+            self.isShowingRightOption = true
+            let randomNumberListItem = randomNumberList[numberListPoint]
+            let pairingDataToShow = wordListDataArray[randomNumberListItem]
+            if let englishWord = pairingDataToShow[englishWordKey], let spanishWord = pairingDataToShow[spanishWordKey] {
+                self.updateViewWithWords(english: englishWord, spanish: spanishWord)
+            }
+            
+        default:
+            self.isShowingRightOption = false
+            let randomNumberListItem = randomNumberList[numberListPoint]
+            let pairingDataToShow = wordListDataArray[randomNumberListItem]
+            let wrongPairingData = wordListDataArray[generateNumberForWrongPairingOtherThan(numberToAvoid: randomNumberListItem)]
+            if let englishWord = pairingDataToShow[englishWordKey], let spanishWord = wrongPairingData[spanishWordKey] {
+                self.updateViewWithWords(english: englishWord, spanish: spanishWord)
             }
         }
     }
     
     private func updateViewWithWords(english: String, spanish: String) {
         numberListPoint += 1
-        self.updateView?(english, spanish)
+        self.englishWordToDisplay = english
+        self.spanishWordToDisplay = spanish
+        
+        self.updateView?()
     }
-    
     
     func generateNumberForWrongPairingOtherThan(numberToAvoid: Int) -> Int {
         let randomNumber = Int(arc4random_uniform(UInt32(wordListDataArray.count)))
@@ -119,6 +149,14 @@ class GameViewModel: GameViewModelProtocol {
         } else {
             self.stateManager.incorrectChoices = self.stateManager.incorrectChoices + 1
         }
+    }
+    
+    func getEnglishWordToDisplay() -> String {
+        return self.englishWordToDisplay
+    }
+    
+    func getSpanishWordToDisplay() -> String {
+        return self.spanishWordToDisplay
     }
     
 }
