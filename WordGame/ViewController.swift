@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var wrongAttemptsLabel: UILabel!
     @IBOutlet weak var spanishLabel: UILabel!
     @IBOutlet weak var englishLabel: UILabel!
+    @IBOutlet weak var spanishLabelTop: NSLayoutConstraint!
     
     lazy var viewModel = {
                 GameViewModel()
@@ -28,6 +29,13 @@ class ViewController: UIViewController {
         self.viewModel.updateView = { [weak self] in
             DispatchQueue.main.async {
                 self?.updateScore()
+                
+                UIView.animate(withDuration: TimeInterval(self?.viewModel.getTimeForAttempt() ?? 5)) {
+                    self?.spanishLabelTop.constant = self?.view.bounds.height ?? 500
+                    self?.view.layoutIfNeeded()
+                }
+
+                
                 self?.spanishLabel.text = self?.viewModel.getSpanishWordToDisplay()
                 self?.englishLabel.text = self?.viewModel.getEnglishWordToDisplay()
             }
@@ -56,11 +64,20 @@ class ViewController: UIViewController {
         wrongAttemptsLabel.text = "Wrong attempts:" + viewModel.getWrongAnswersValues()
     }
     
+    private func resetSpanishLabel() {
+        self.spanishLabel.text = ""
+        self.spanishLabelTop.constant = -100
+        self.view.layoutIfNeeded()
+
+    }
+    
     @IBAction func correctButtonTapped(_ sender: Any) {
+        resetSpanishLabel()
         viewModel.userSelectedCorrect()
     }
     
     @IBAction func wrongButtonTapped(_ sender: Any) {
+        resetSpanishLabel()
         viewModel.userSelectedWrong()
     }
     

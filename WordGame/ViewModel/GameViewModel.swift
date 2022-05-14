@@ -9,6 +9,7 @@ import Foundation
 
 protocol GameViewModelProtocol {
     func generateNumberForWrongPairingOtherThan(numberToAvoid: Int) -> Int
+    func getTimeForAttempt() -> Int
     func randomPercent() -> Double
     func startGame()
     func restartGame()
@@ -157,6 +158,10 @@ class GameViewModel: GameViewModelProtocol {
     
     func getSpanishWordToDisplay() -> String {
         return self.spanishWordToDisplay
+    }
+    
+    func getTimeForAttempt() -> Int {
+        return self.provider.getTimeAllowedForAttempt()
     }
     
 }
